@@ -36,7 +36,7 @@ inline void fastIo() {
 
 vector<pll> arr[200010];
 int level[200010];
-int pararr[log2 + 1][200010];
+int pararr[log2+1][200010];
 ll length[200010];
 int A = 1, B = 1;
 ll jirum;
@@ -49,9 +49,11 @@ void mktree(int par, int cur, ll len, int lv) {
 
 void mksparse(int n) {
     for (int i = 0; i < log2; i++) {
-        if (pararr[i][n] == -1) continue;
-        int temp = pararr[i][n];
-        pararr[i + 1][n] = pararr[i][temp];
+        for (int j = 1; j <= n; j++) {
+            if (pararr[i][j] == -1) continue;
+            int temp = pararr[i][j];
+            pararr[i + 1][j] = pararr[i][temp];
+        }
     }
 }
 
@@ -118,9 +120,11 @@ int main() {
         cin >> node >> amount;
         arr[node].emplace_back(i, amount + length[node]);
         mktree(node, i, amount, level[node] + 1);
+    }
 
-        mksparse(i);
+    mksparse(n+1);
 
+    for (int i = 2; i <= n + 1; i++) {
         get_jirum(i);
 
         cout << jirum << "\n";

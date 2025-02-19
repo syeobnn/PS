@@ -1,25 +1,14 @@
-WITH TBL AS (
-    SELECT
-        MEMBER_ID,
-        COUNT(*) AS COUNTS
-    FROM
-        REST_REVIEW
-    GROUP BY
-        MEMBER_ID
-    ORDER BY
-        COUNTS DESC
-    LIMIT 1    
+with reviewCounts as(
+    select      member_id, count(*) as revcount
+    from        rest_review
+    group by    member_id
+    order by    revcount desc
+    limit 1
 )
-
-
-SELECT
-    m.MEMBER_NAME,
-    r.REVIEW_TEXT,
-    DATE_FORMAT(r.REVIEW_DATE, '%Y-%m-%d') AS REVIEW_DATE
-FROM
-    MEMBER_PROFILE m
-    INNER JOIN REST_REVIEW r ON m.MEMBER_ID = r.MEMBER_ID
-    INNER JOIN TBL t ON m.MEMBER_ID = t.MEMBER_ID
-ORDER BY
-    r.REVIEW_DATE ASC,
-    r.REVIEW_TEXT ASC;
+select      mp.member_name, 
+            rr.review_text, 
+            date_format(rr.review_date, '%Y-%m-%d') as fdate
+from        member_profile mp 
+join        rest_review rr on mp.member_id = rr.member_id
+join        reviewCounts rc on mp.member_id = rc.member_id
+order by    rr.review_date asc, rr.review_text asc;

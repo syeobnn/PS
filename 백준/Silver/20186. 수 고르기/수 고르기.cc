@@ -28,37 +28,9 @@ inline void fastIo() {
     cout.tie(nullptr);
 }
 
-vector<int> arr;
-vector<int> picked;
+priority_queue<int> pq;
 int visited[5001];
 int n, k;
-
-//pick() 고르는거
-//minu() minus하는거
-
-int pick() {
-    int big = -INF;
-    int idx = 0;
-
-    for (int i = 0;i<n;i++) {
-        if (big < arr[i] && !visited[i]) {
-            big = arr[i];
-            idx = i;
-        }
-    }
-
-    visited[idx] = 1;
-
-    picked.push_back(idx);
-
-    return idx;
-}
-
-void minu(int idx) {
-    for (int i = idx; i<n;i++) {
-        arr[i]--;
-    }
-}
 
 int main() {
     fastIo();
@@ -66,23 +38,18 @@ int main() {
     cin >> n >> k;
 
     int ans = 0;
-
-    arr.resize(n);
+    int num = k;
 
     for (int i =0;i<n;i++) {
-        cin >> arr[i];
+        int a; cin >> a;
+        pq.push(a);
     }
 
     while (k--) {
-        int idx = pick();
-        minu(idx + 1);
+        ans += pq.top(); pq.pop();
     }
 
-    for (auto i : picked) {
-        ans += arr[i];
-    }
-
-    cout << ans << "\n";
+    cout << ans - num*(num-1)/2 << "\n";
 
     return 0;
 }

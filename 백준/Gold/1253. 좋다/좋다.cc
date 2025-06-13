@@ -42,41 +42,17 @@ int main() {
 
     sort(arr.begin(), arr.end());
 
-    for (int i = 0; i < N - 1; i++) {
-        for (int j = i + 1; j < N; j++) {
-            ll l = 0, r = N - 1;
-            ll val = arr[i] + arr[j];
+    for (int i =0;i<N;i++) {
+        int l = 0, r = N -1;
+        while (l < r) {
+            if (i == l) {l++; continue;}
+            if (i == r) {r--; continue;}
+            ll sum = arr[l] + arr[r];
 
-            while (l <= r) {
-                int mid = (l + r) / 2;
-                if (arr[mid] == val) {
-                    if (mid == i || mid == j)
-                        break;
-                    int temp_l = mid, temp_r = mid;
-
-                    if (!check_arr[mid]) {
-                        while (temp_l >= 0 && arr[temp_l] == val) {
-                            check_arr[temp_l] = true;
-                            temp_l--;
-                        }
-
-                        while (temp_r < N && arr[temp_r] == val) {
-                            check_arr[temp_r] = true;
-                            temp_r++;
-                        }
-                    }
-                    break;
-                } else if (arr[mid] > val)
-                    r = mid - 1;
-                else
-                    l = mid + 1;
-            }
+            if (sum == arr[i]) {cnt++; break;}
+            else if (sum > arr[i]) {r--;}
+            else l++;
         }
-    }
-
-    for (auto i: check_arr) {
-        if (i)
-            cnt++;
     }
 
     cout << cnt << "\n";

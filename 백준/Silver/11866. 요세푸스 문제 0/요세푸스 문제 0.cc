@@ -32,50 +32,28 @@ int n, k;
 vector<int> arr;
 vector<int> yose_arr;
 
-int counter(int index) {
-    int cnt = k;
-    while (cnt--) {
-        index++;
-        if (index > n)  index %= n;
-
-        while (arr[index] == -1) {
-            index++;
-            if (index > n)  index %= n;
-        }
-    }
-    return index;
-}
-
 int main() {
     fastIo();
 
     cin >> n >> k;
 
     int index = 0;
-    int cnt = n;
-    arr.resize(n + 1);
-    arr[0] = -1;
+    arr.resize(n);
 
-    for (int i = 1; i <= n; i++) {
-        arr[i] = i;
+    for (int i = 0; i < n; i++) {
+        arr[i] = i + 1;
     }
 
-    while (cnt--) {
-        index = counter(index);
-
+    while (!arr.empty()) {
+        index = (index + k - 1) % arr.size();
         yose_arr.push_back(arr[index]);
-        arr[index] = -1;
+        arr.erase(arr.begin() + index);
     }
 
     cout << "<";
     for (int i = 0; i < n; i++) {
-        if (i == n - 1) {
-            cout << yose_arr[i];
-            continue;
-        }
-        cout << yose_arr[i] << ", ";
+        cout << yose_arr[i] << (i < n - 1 ? ", " : "");
     }
-
     cout << ">" << "\n";
 
     return 0;
